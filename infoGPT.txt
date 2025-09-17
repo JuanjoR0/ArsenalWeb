@@ -1,0 +1,92 @@
+Prerrequisitos y extensiones;
+	-JDK 17
+	-Maven 3.9+
+	-Node.js 18+
+	-Angular CLI (npm i -g @angular/cli)
+	-VS Code con extensiones (Extension Pack for Java, Maven for Java, Angular Language Service, REST Client)
+
+Objetivo de repo y despliegue;
+	- Un único repositorio (monoproyecto) que construye backend y frontend juntos.
+	- Un único servicio en Render (Java/Spring Boot) que sirve:
+		* API REST en /api/**
+		* Angular (build de producción) como estático desde / (Spring Boot /static)
+	- Build de Angular integrado en Maven (frontend-maven-plugin) → no hay pasos manuales.
+	- Sin base de datos externa: H2 embebida.
+	- Datos iniciales auto-cargados (categorías, productos, usuarios, etc.) en el arranque (Flyway + seeds).
+
+Lenguaje/Build;
+	-Lenguaje: Java
+	-Build: Maven (pom único en la raíz)
+	-Node/Angular se ejecutan desde Maven durante el empaquetado
+
+Estructura del repositorio (propuesta);
+	/ (raíz)
+	 ├─ pom.xml                          -> define build de backend + build Angular
+	 ├─ tienda-frontend/                 -> proyecto Angular (SPA)
+	 └─ src/main/java|resources          -> proyecto Spring Boot (API y estáticos)
+	      └─ resources/static/           -> Maven copiará aquí el dist/ de Angular en build
+
+--Frameworks y herramientas--
+
+Backend (API REST);
+	-Spring Boot (arranque, autoconfiguración, servidor embebido)
+	-Spring Web (endpoints REST)
+	-Spring Data JPA + Hibernate (acceso a datos)
+	-Bean Validation (validaciones de DTOs)
+	-Flyway (migraciones + inserción de datos iniciales)
+	-H2 (base de datos embebida; modo memoria en dev, modo fichero en Render)
+	-CORS habilitado para http://localhost:4200 en dev; en prod se sirve la SPA desde el propio backend
+	-(Más adelante) Spring Security con JWT (roles admin/cliente)
+	-Subida/servido de imágenes (almacenamiento local; en Render, carpeta temporal)
+
+Frontend (Angular);
+	-SPA con Angular (routing, servicios para /api/**, componentes catálogo/carrito/admin)
+	-El build de producción se ejecuta con Maven y se copia a src/main/resources/static/
+	-En desarrollo, se usa ng serve en puerto 4200 con proxy a http://localhost:8080/api
+
+Capas de dominio (backend);
+	-Entidades JPA (Arma, Categoria, Usuario, Pedido, etc.)
+	-Repositorios Spring Data
+	-Servicios de dominio (interfaces e implementaciones)
+	-Controladores REST públicos (/api/...) y admin (/api/admin/...)
+	-DTOs para entrada/salida y mapeo
+	-Seed de datos: Flyway V1__init.sql (esquema) + V2__seed.sql (datos) y/o CommandLineRunner
+
+Perfiles y configuración;
+	-application.yml (por defecto, dev):
+		* H2 en memoria (jdbc:h2:mem:tienda)
+		* CORS para http://localhost:4200
+	-application-render.yml (producción en Render):
+		* H2 en fichero (jdbc:h2:file:./data/tienda;AUTO_SERVER=TRUE)
+		* sirve Angular desde /static (sin CORS)
+		* deshabilita swagger-ui si se desea
+	-Active profile mediante SPRING_PROFILES_ACTIVE (render)
+
+DEPENDENCIAS (Maven);
+	-Spring Web
+	-Spring Data JPA
+	-Validation
+	-H2 Database
+	-Flyway
+	-Lombok
+	-springdoc-openapi-starter-webmvc-ui (Swagger UI)
+	-Spring Boot Starter Test
+	-(Más adelante) Spring Security (JWT)
+	-frontend-maven-plugin (para compilar Angular dentro del ciclo Maven)
+
+Comandos de desarrollo;
+	-Backend: mvn spring-boot:run  (API en 8080)
+	-Frontend (desacoplado en dev): cd tienda-frontend && ng serve --proxy-config proxy.conf.json
+	-Swagger: http://localhost:8080/swagger-ui/index.html
+
+Despliegue en Render (un solo servicio);
+	-Build Command: ./mvnw -DskipTests package
+	-Start Command: java -jar target/tienda-backend-*.jar
+	-Variable de entorno: SPRING_PROFILES_ACTIVE=render
+	-El jar incluirá el /static con el build de Angular ya copiado
+
+Datos iniciales;
+	-Se crean con Flyway:
+		* V1__init.sql -> tablas y relaciones
+		* V2__seed.sql -> categorías, productos, usuarios demo, etc.
+	-Así, al arrancar en Render, la app ya tiene información lista sin depender de BD externa.

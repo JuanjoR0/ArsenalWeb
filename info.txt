@@ -1,0 +1,44 @@
+Prerrequisitos y extensiones;
+	-JDK 17
+	-Maven 3.9+
+	-Node.js 18+
+	-Angular CLI (npm i -g @angular/cli)
+	-VS Code con extensiones (Extension Pack for Java, Maven for Java, Angular Language Service, REST Client)
+
+-Lenguaje: Java
+-Build: Maven (gestión de dependencias y ciclo de build (pom.xml))
+
+--Frameworks y herramientas--
+
+Backend;
+	-Spring Boot (arranque de la app (Application.java), autoconfiguración y servidor embebido.)
+	-Spring Web / Spring MVC (controladores MVC que devuelven vistas Mustache y controladores REST )
+	-Spring Data JPA con Hibernate como implementación (capa de acceso a datos)
+	-Interceptors MVC para lógica transversal (p.ej. comprobar sesión de admin).
+	-Seed/Setup (clases y utilidades)
+	-Gestión de ficheros para subir/guardar imágenes de productos.
+	-Constantes/SQL (paquetes constantes y constantesSQL)
+
+Vistas y recursos estáticos (lado servidor);
+	-Plantillas Mustache
+	-CSS
+	-JS
+	-Librerias JS (jquery.js, js.cookie.min.js, mustache.js)
+
+Servicios/Capas de dominio;
+	-Servicios (interfaces y sus implementaciones)
+	-Controladores “admin”
+	-Controladores de imagen
+	-“Webservices” (endpoints REST consumibles por front (Angular o JS))
+
+
+DEPENDENCIAS;
+-Spring Web
+-Spring Data JPA
+-Mustache 
+-Validation (Bean Validation)
+-MySQL Driver 
+-Lombok 
+-Spring Boot DevTools 
+-Spring Security 
+-Flyway o Liquibase para migraciones 

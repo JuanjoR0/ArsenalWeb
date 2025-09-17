@@ -1,0 +1,167 @@
+🔹 FASE 0 — Preparación inicial (ya hecha ✅)
+
+Instalamos y configuramos:
+
+Java 17, Maven, VS Code con extensiones de Spring Boot, Lombok y YAML.
+
+Dependencias principales (spring-boot-starter-web, spring-boot-starter-data-jpa, spring-boot-starter-validation, springdoc-openapi, flyway, h2, lombok).
+
+Creamos proyecto Spring Boot (arsenalweb-backend).
+
+Configuramos application.yml para:
+
+H2 Database en memoria.
+
+Flyway migrations (db/migration).
+
+Consola H2 en /h2-console.
+
+CORS para Angular en http://localhost:4200.
+
+🔹 FASE 1 — Backend básico (ya hecha ✅)
+
+Creamos migraciones iniciales:
+
+V1__init.sql → Tablas categorias y armas.
+
+V2__seed_datos.sql → Datos iniciales de prueba.
+
+Creamos entidades:
+
+Categoria.java
+
+Arma.java (incluye categoría como relación + atributos alcance, daño, precisión, precioIndice [0-100]).
+
+Creamos repositorios:
+
+CategoriaRepository.java
+
+ArmaRepository.java
+
+Creamos controladores REST:
+
+CategoriaController → GET, POST.
+
+ArmaController → GET, POST, PUT, DELETE.
+
+Configuramos Swagger (springdoc-openapi) para exponer documentación en /swagger-ui.html.
+
+👉 Estado actual: Swagger ya muestra endpoints de categorías y armas.
+
+🔹 FASE 2 — Backend avanzado (pendiente ⏳)
+
+Añadir DTOs y validaciones con @Valid.
+
+Implementar paginación y filtrado en /api/armas:
+
+Paginación: 8 armas por página.
+
+Filtros: por categoría, nombre (buscador en tiempo real), rango de stats (daño, alcance, etc.).
+
+Endpoint ejemplo:
+
+GET /api/armas?page=0&size=8&categoria=Pistola&nombre=ak
+
+
+Añadir servicio de imágenes:
+
+Subida de archivos (MultipartFile).
+
+Guardado en /uploads.
+
+Exposición pública en /images/{filename}.
+
+Añadir seguridad básica con Spring Security:
+
+Registro/login de usuarios (JWT).
+
+Roles: ROLE_USER (cliente) y ROLE_ADMIN (administrador).
+
+Restricciones:
+
+Solo ROLE_ADMIN puede crear/editar/eliminar armas.
+
+Solo ROLE_USER logeado puede añadir al carrito.
+
+🔹 FASE 3 — Frontend inicial (pendiente ⏳)
+
+Crear proyecto Angular (arsenalweb-frontend).
+
+ng new arsenalweb-frontend --routing --style=scss
+cd arsenalweb-frontend
+ng serve
+
+
+Crear estructura de páginas principales:
+
+Header con menú: Inicio, Armas, Accesorios, Contacto, Logo.
+
+Login/Registro en el header.
+
+Carrito (visible solo si el usuario está logeado).
+
+Integrar servicios Angular para consumir API REST del backend (HttpClient).
+
+🔹 FASE 4 — Frontend catálogo y paginación (pendiente ⏳)
+
+Página Armas:
+
+Mostrar catálogo paginado (8 por página → 2 filas × 4 columnas).
+
+Cada arma en card:
+
+Imagen arriba.
+
+Nombre debajo.
+
+Características (alcance, daño, precisión, precioIndice).
+
+Precio en la parte inferior.
+
+Botón “Añadir al carrito” (solo si está logeado).
+
+Implementar paginación Angular (ngx-pagination o paginador propio).
+
+Implementar buscador en tiempo real:
+
+Campo de búsqueda que filtra mientras se escribe (usando debounceTime).
+
+🔹 FASE 5 — Frontend administrador (pendiente ⏳)
+
+Vista especial para usuarios con ROLE_ADMIN:
+
+Listado de armas en tarjetas (igual que catálogo).
+
+Cada tarjeta con botones Editar y Eliminar.
+
+Botón flotante “Añadir arma” en la esquina superior.
+
+Formularios reactivos para añadir/editar armas.
+
+🔹 FASE 6 — Carrito y autenticación (pendiente ⏳)
+
+Carrito local (almacenado en localStorage) y sincronizado con backend si el usuario está logeado.
+
+Backend: endpoints /api/carrito para añadir/quitar/listar armas.
+
+Integración JWT en Angular con HttpInterceptor.
+
+🔹 FASE 7 — Deploy en Render (pendiente ⏳)
+
+Configurar en backend pom.xml el plugin frontend-maven-plugin para que:
+
+Compile Angular y copie dist/arsenalweb-frontend → src/main/resources/static.
+
+Así, el backend sirve la app Angular ya compilada.
+
+Probar en local:
+
+mvn clean install
+java -jar target/arsenalweb-backend-0.0.1-SNAPSHOT.jar
+
+
+→ Debe mostrar Angular en http://localhost:8080.
+
+Subir repo a GitHub.
+
+Conectar Render y desplegar.
