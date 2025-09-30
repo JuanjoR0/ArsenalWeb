@@ -29,15 +29,4 @@ UPDATE armas SET alcance = COALESCE(alcance, 60),
                  precision = COALESCE(precision, 65),
                  precio_indice = COALESCE(precio_indice, 50);
 
--- Semillas de ejemplo coherentes con las nuevas categorías (idempotentes)
-INSERT INTO armas (nombre, descripcion, precio, stock, imagen_url, categoria_id, alcance, danio, precision, precio_indice)
-SELECT 'Desert Eagle (CS)', 'Pistola clásica de Counter-Strike', 399.99, 10, NULL, c.id, 40, 90, 80, 60
-FROM categorias c
-WHERE c.nombre = 'Pistola'
-  AND NOT EXISTS (SELECT 1 FROM armas a WHERE a.nombre = 'Desert Eagle (CS)');
 
-INSERT INTO armas (nombre, descripcion, precio, stock, imagen_url, categoria_id, alcance, danio, precision, precio_indice)
-SELECT 'AK-47 (CS)', 'Rifle de asalto soviético icónico', 599.99, 5, NULL, c.id, 70, 80, 60, 65
-FROM categorias c
-WHERE c.nombre = 'Fusil de Asalto'
-  AND NOT EXISTS (SELECT 1 FROM armas a WHERE a.nombre = 'AK-47 (CS)');

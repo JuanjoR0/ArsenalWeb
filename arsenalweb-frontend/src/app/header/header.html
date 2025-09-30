@@ -1,0 +1,31 @@
+<nav class="navbar">
+  <div class="contenedor">
+    <img src="assets/LogoAW-blanco.png" alt="ArsenalWeb">
+    <ul class="menu">
+      <li><a routerLink="/">Inicio</a></li>
+      <li><a routerLink="/armas">Armas</a></li>
+      <li><a routerLink="/accesorios">Accesorios</a></li>
+      <li><a routerLink="/contacto">Contacto</a></li>
+    </ul>
+
+    <div class="actions">
+      <!-- Si no está logueado -->
+      <ng-container *ngIf="!authService.isLoggedIn(); else loggedInBlock">
+        <a href="#" (click)="openAuth('login'); $event.preventDefault()">Login</a>
+        <span>|</span>
+        <a href="#" (click)="openAuth('register'); $event.preventDefault()">Registro</a>
+      </ng-container>
+
+      <!-- Si está logueado -->
+      <ng-template #loggedInBlock>
+        <div class="perfil">
+          <img src="assets/usuario.png" alt="Usuario" class="perfil-img">
+          <span>{{ authService.getUsername() }}</span>
+          <button (click)="logout()">Cerrar sesión</button>
+        </div>
+      </ng-template>
+
+      <img class="carrito" src="assets/carrito-de-compras.png" alt="icono carrito">
+    </div>
+  </div>
+</nav>

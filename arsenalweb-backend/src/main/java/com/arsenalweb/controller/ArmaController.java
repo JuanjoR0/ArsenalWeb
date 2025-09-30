@@ -6,11 +6,13 @@ import com.arsenalweb.model.Categoria;
 import com.arsenalweb.repository.ArmaRepository;
 import com.arsenalweb.repository.CategoriaRepository;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/armas")
@@ -25,10 +27,30 @@ public class ArmaController {
         this.categoriaRepo = categoriaRepo;
     }
 
-    // ====== READ ======
+    // ====== READ con paginación y filtros ======
     @GetMapping
-    public List<ArmaDTO> listar() {
-        return armaRepo.findAll().stream().map(this::toDTO).toList();
+    public ResponseEntity<?> listar(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "8") int size,
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String categoria
+    ) {
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Arma> pageArmas;
+
+        if (nombre != null && categoria != null) {
+            pageArmas = armaRepo.findByNombreContainingIgnoreCaseAndCategoria_NombreIgnoreCase(nombre, categoria, pageable);
+        } else if (nombre != null) {
+            pageArmas = armaRepo.findByNombreContainingIgnoreCase(nombre, pageable);
+        } else if (categoria != null) {
+            pageArmas = armaRepo.findByCategoria_NombreIgnoreCase(categoria, pageable);
+        } else {
+            pageArmas = armaRepo.findAll(pageable);
+        }
+
+        Page<ArmaDTO> pageDto = pageArmas.map(this::toDTO);
+        return ResponseEntity.ok(pageDto);
     }
 
     @GetMapping("/{id}")
@@ -62,7 +84,6 @@ public class ArmaController {
             existing.setAlcance(dto.alcance());
             existing.setDanio(dto.danio());
             existing.setPrecision(dto.precision());
-            existing.setPrecioIndice(dto.precioIndice());
             return ResponseEntity.ok(toDTO(armaRepo.save(existing)));
         }).orElse(ResponseEntity.notFound().build());
     }
@@ -85,10 +106,10 @@ public class ArmaController {
                 a.getStock(),
                 a.getImagenUrl(),
                 a.getCategoria().getId(),
+                a.getCategoria().getNombre(),
                 a.getAlcance(),
                 a.getDanio(),
-                a.getPrecision(),
-                a.getPrecioIndice()
+                a.getPrecision()
         );
     }
 
@@ -103,7 +124,6 @@ public class ArmaController {
         arma.setAlcance(dto.alcance());
         arma.setDanio(dto.danio());
         arma.setPrecision(dto.precision());
-        arma.setPrecioIndice(dto.precioIndice());
         return arma;
     }
 }

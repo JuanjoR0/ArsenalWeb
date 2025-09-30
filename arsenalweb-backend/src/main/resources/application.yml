@@ -3,17 +3,17 @@ server:
 
 spring:
   datasource:
-    url: jdbc:h2:mem:arsenalwebdb;DB_CLOSE_DELAY=-1
+    url: "jdbc:h2:mem:arsenalwebdb;DB_CLOSE_DELAY=0;DB_CLOSE_ON_EXIT=TRUE"
     driver-class-name: org.h2.Driver
     username: sa
     password:
   jpa:
     hibernate:
-      ddl-auto: validate   # Usamos Flyway, no generamos el esquema automáticamente
+      ddl-auto: validate   # o 'update' mientras pruebas
     show-sql: true
     properties:
       hibernate:
-        format_sql: true
+        "[format_sql]": true
   h2:
     console:
       enabled: true
@@ -21,8 +21,3 @@ spring:
   flyway:
     enabled: true
     locations: classpath:db/migration
-
-# Configuración propia para CORS
-app:
-  cors:
-    allowed-origins: "http://localhost:4200"

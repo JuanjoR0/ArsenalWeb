@@ -1,0 +1,46 @@
+<div class="aw-modal-overlay">
+  <div class="aw-modal">
+    <!-- botón cerrar arriba -->
+    <button class="aw-close" type="button" (click)="modalService.close()"><img src="../../assets/cerrar.png" height="20px" alt=""></button>
+
+    <h2>{{ modalService.isLoginMode ? 'Iniciar Sesión' : 'Registro' }}</h2>
+
+    <form (ngSubmit)="onSubmit()">
+      <div *ngIf="!modalService.isLoginMode">
+        <input
+          type="text"
+          placeholder="Nombre de usuario"
+          [(ngModel)]="username"
+          name="username"
+          required
+        />
+      </div>
+      <div>
+        <input
+          type="email"
+          placeholder="Correo electrónico"
+          [(ngModel)]="email"
+          name="email"
+          required
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          placeholder="Contraseña"
+          [(ngModel)]="password"
+          name="password"
+          required
+        />
+      </div>
+
+      <button type="submit">
+        {{ modalService.isLoginMode ? 'Acceder' : 'Registrarse' }}
+      </button>
+    </form>
+    <!-- 👇 mensaje de error -->
+    <div *ngIf="errorMsg" class="error-message">
+      {{ errorMsg }}
+    </div>
+  </div>
+</div>

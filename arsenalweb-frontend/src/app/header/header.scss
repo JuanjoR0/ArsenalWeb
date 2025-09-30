@@ -1,0 +1,104 @@
+.navbar {
+  position: fixed;       /* siempre arriba */
+  top: 0;
+  left: 0;
+  width: 100%;           
+  height: 80px;
+  background: #222;
+  z-index: 1000;
+}
+
+.contenedor{
+  min-width: 1400px; //ancho del contenido de toda la web
+  height: 60px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0;
+  color: white;
+  // background-color: red;
+}
+
+img{
+  width: 100px;
+  height: 100px;
+  margin-left: -20px;
+}
+
+.menu {
+  list-style: none;
+  display: flex;
+  gap: 40px;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+
+  li a {
+    display: inline-block;
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+    font-weight: bold;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  a {
+    color: #ccc;
+    text-decoration: none;
+    transition: transform 0.3s ease;
+
+    &:hover {
+      color: white;
+      transform: scale(1.1);
+    }
+  }
+
+  .carrito {
+    cursor: pointer;
+    width: 34px;
+    height: 34px;
+    margin-left: 20px;
+  }
+}
+.perfil {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  .perfil-img {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  span {
+    font-weight: bold;
+    color: white;
+  }
+
+  button {
+    background: transparent;
+    border: 1px solid #ccc;
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: white;
+
+    &:hover {
+      background: #444;
+    }
+  }
+}

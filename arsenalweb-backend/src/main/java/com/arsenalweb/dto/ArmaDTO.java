@@ -11,9 +11,8 @@ public record ArmaDTO(
         @NotNull @PositiveOrZero Integer stock,
         String imagenUrl,
         @NotNull Long categoriaId,
-
+        String categoriaNombre,
         @Min(0) @Max(100) Integer alcance,
         @Min(0) @Max(100) Integer danio,
-        @Min(0) @Max(100) Integer precision,
-        @Min(0) @Max(100) Integer precioIndice
+        @Min(0) @Max(100) Integer precision
 ) {}

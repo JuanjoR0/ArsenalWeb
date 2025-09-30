@@ -90,3 +90,10 @@ Datos iniciales;
 		* V1__init.sql -> tablas y relaciones
 		* V2__seed.sql -> categorías, productos, usuarios demo, etc.
 	-Así, al arrancar en Render, la app ya tiene información lista sin depender de BD externa.
+
+
+
+"El backend (Spring Boot) expone la API REST en el puerto 8080,
+y el frontend (Angular) corre en el puerto 4200 consumiendo esa API.
+Lo que se ve en el navegador (tarjetas de armas, menús, etc.) es el frontend
+renderizado por Angular, no la API directamente."

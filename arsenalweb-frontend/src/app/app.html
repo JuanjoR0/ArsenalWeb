@@ -1,0 +1,5 @@
+<app-header></app-header>
+<router-outlet></router-outlet>
+
+<!-- 👇 Solo se muestra si el modal está abierto -->
+<app-auth-modal *ngIf="authModalService.isOpen"></app-auth-modal>

@@ -46,7 +46,4 @@ public class Arma {
     @Min(0) @Max(100)
     private Integer precision;
 
-    @Min(0) @Max(100)
-    @Column(name = "precio_indice")
-    private Integer precioIndice;
 }

@@ -1,0 +1,74 @@
+<div class="seccionarmas">
+  <div class="contenedor">
+    <!-- 🔎 Buscador -->
+    <div class="buscador">
+      <input type="text"
+            placeholder="Buscar arma..."
+            [(ngModel)]="searchTerm"
+            (keyup)="buscar()">
+    </div>
+
+    <!-- 🪖 Catálogo de armas -->
+    <div class="row">
+      <div *ngFor="let arma of armas" class="col-md-3 mb-4">
+        <div class="card ">
+          <img [src]="arma.imagenUrl || 'https://via.placeholder.com/200x150'"
+              class="p-2"
+              style="max-height: 180px; object-fit: contain;"
+              [alt]="arma.nombre">
+          <div>
+            <h5 class="card-title fw-bold" style="font-size: 1.4rem;">{{ arma.nombre }}</h5>
+            <p style="margin-bottom: 25px;">{{ arma.categoriaNombre || arma.categoriaId }}</p>
+            <div class="stat">
+              <span>Alcance:</span>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="arma.alcance"></div>
+              </div>
+            </div>
+
+            <div class="stat">
+              <span>Daño:</span>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="arma.danio"></div>
+              </div>
+            </div>
+
+            <div class="stat">
+              <span>Precisión:</span>
+              <div class="progress-bar">
+                <div class="progress-fill" [style.width.%]="arma.precision"></div>
+              </div>
+            </div>
+            <p style="margin-top: 20px;"><strong>Precio:</strong> {{ arma.precio }} €</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-center">
+            <button class="btn btn-dark w-100">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📄 Paginación -->
+    <div class="text-center mt-3" *ngIf="totalPaginas > 1">
+      <button class="btn btn-outline-dark mx-1"
+              [disabled]="paginaActual === 0"
+              (click)="cambiarPagina(paginaActual - 1)">
+              <span style="display:inline-block; transform: scaleX(-1);">➜</span>
+      </button>
+
+      <ng-container *ngFor="let p of [].constructor(totalPaginas); let i = index">
+        <button class="btn"
+                [ngClass]="i === paginaActual ? 'btn-dark' : 'btn-outline-dark'"
+                (click)="cambiarPagina(i)">
+          {{ i + 1 }}
+        </button>
+      </ng-container>
+
+      <button class="btn btn-outline-dark mx-1"
+              [disabled]="paginaActual === totalPaginas - 1"
+              (click)="cambiarPagina(paginaActual + 1)"> 
+              ➜
+      </button>
+    </div>
+  </div>
+</div>

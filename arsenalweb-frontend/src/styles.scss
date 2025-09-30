@@ -1,0 +1,12 @@
+:root {
+  --header-height: 80px;
+}
+
+body {
+  margin: 0; // quitar márgenes del body
+  padding: 0;
+}
+
+.main-content {
+  padding-top: var(--header-height); // deja espacio debajo del header
+}

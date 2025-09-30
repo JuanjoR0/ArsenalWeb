@@ -12,6 +12,10 @@ CREATE TABLE armas (
   stock INT NOT NULL,
   imagen_url VARCHAR(255),
   categoria_id BIGINT NOT NULL,
+  alcance INT NOT NULL,        
+  danio INT NOT NULL,          
+  precision INT NOT NULL,      
   CONSTRAINT fk_armas_categoria FOREIGN KEY (categoria_id) REFERENCES categorias(id)
 );
+
 
