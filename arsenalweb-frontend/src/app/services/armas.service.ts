@@ -1,47 +1,54 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Arma {
-  id: number;
+  id?: number;
   nombre: string;
+  tipo: string;
   descripcion: string;
   precio: number;
-  stock: number;
   imagenUrl: string;
-  categoriaId: number;
-  categoriaNombre: string; 
-  alcance: number;
-  danio: number;
-  precision: number;
+  categoria?: { id: number; nombre?: string } | null; // 👈 acepta null ahora
+  alcance?: number;
+  danio?: number;
+  precision?: number;
 }
 
-export interface PaginaArmas {
-  content: Arma[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-  first: boolean;
-  last: boolean;
-}
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class ArmasService {
-  private apiUrl = 'http://localhost:8080/api/armas';
+  private apiUrl = 'http://localhost:8080/api/admin/armas';
 
   constructor(private http: HttpClient) {}
 
-  getArmas(page: number, size: number, nombre?: string, categoria?: string): Observable<PaginaArmas> {
-    let params = new HttpParams()
-      .set('page', page)
-      .set('size', size);
+  // 🔹 Obtener lista de armas con paginación y búsqueda
+  getArmas(page = 0, size = 10, search = ''): Observable<any> {
+    const params = `?page=${page}&size=${size}&search=${encodeURIComponent(search)}`;
+    return this.http.get<any>(`${this.apiUrl}${params}`);
+  }
 
-    if (nombre) params = params.set('nombre', nombre);
-    if (categoria) params = params.set('categoria', categoria);
+  // 🔹 Crear arma
+  crearArma(arma: Arma): Observable<Arma> {
+    return this.http.post<Arma>(this.apiUrl, arma);
+  }
 
-    return this.http.get<PaginaArmas>(this.apiUrl, { params });
+
+  // 🔹 Actualizar arma
+  actualizarArma(id: number, arma: Arma): Observable<Arma> {
+    return this.http.put<Arma>(`${this.apiUrl}/${id}`, arma);
+  }
+
+  // 🔹 Eliminar arma
+  deleteArma(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // 🔹 Obtener arma por ID (opcional)
+  getArmaById(id: number): Observable<Arma> {
+    return this.http.get<Arma>(`${this.apiUrl}/${id}`);
   }
 }

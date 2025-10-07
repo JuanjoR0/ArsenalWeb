@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet,Router } from '@angular/router';
 import { HeaderComponent } from './header/header';
 import { AuthModalComponent } from './auth-modal/auth-modal.component';
 import { AuthModalService } from './auth-modal/auth-modal.service';
-import { CommonModule } from '@angular/common'; // 👈 necesario para *ngIf
-import { FormsModule } from '@angular/forms';   // 👈 necesario para ngModel
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';   
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';   // 👈 necesario para ngModel
   imports: [
     RouterOutlet,
     HeaderComponent,
-    AuthModalComponent, // 👈 ahora Angular reconocerá el modal
+    AuthModalComponent,
     CommonModule,
     FormsModule
   ],
@@ -20,5 +20,12 @@ import { FormsModule } from '@angular/forms';   // 👈 necesario para ngModel
   styleUrl: './app.scss'
 })
 export class App {
-  constructor(public authModalService: AuthModalService) {} // 👈 ya disponible en el template
+  constructor(
+    public authModalService: AuthModalService,
+    private router: Router
+  ) {}
+
+  esAdminRoute(): boolean {
+    return this.router.url.startsWith('/admin');
+  }
 }

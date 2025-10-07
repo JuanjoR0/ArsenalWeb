@@ -1,0 +1,70 @@
+<div class="armas-admin">
+  <div class="crud-header">
+    <h2>Gestión de Armas</h2>
+    <div class="acciones">
+      <input
+        type="text"
+        placeholder="🔍 Buscar arma..."
+        [(ngModel)]="searchTerm"
+        (keyup)="buscarArmas()"
+      />
+      <button class="btn-nueva" (click)="abrirModalCrear()">➕ Nueva Arma</button>
+    </div>
+  </div>
+
+  <table class="crud-table" *ngIf="armas.length > 0; else sinArmas">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Imagen</th>
+        <th>Nombre</th>
+        <th>Categoría</th>
+        <th>Alcance</th>
+        <th>Daño</th>
+        <th>Precisión</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let arma of armas">
+        <td>{{ arma.id }}</td>
+
+        <!-- Imagen -->
+        <td>
+          <img
+            [src]="arma.imagenUrl || '/assets/no-image.png'"
+            alt="{{ arma.nombre }}"
+            class="arma-img"
+          />
+        </td>
+
+        <td>{{ arma.nombre }}</td>
+        <td>{{ arma.categoria?.nombre || '-' }}</td>
+        <td>{{ arma.alcance ?? '-' }}%</td>
+        <td>{{ arma.danio ?? '-' }}%</td>
+        <td>{{ arma.precision ?? '-' }}%</td>
+        <td>{{ arma.precio | currency: 'EUR' }}</td>
+
+        <td>
+          <button class="edit" (click)="abrirModalEditar(arma)">✏️</button>
+          <button class="delete" (click)="abrirModalEliminar(arma)">❌</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <app-arma-modal
+    [visible]="modalVisible"
+    [modo]="modalModo"
+    [arma]="armaSeleccionada"
+    (cerrar)="cerrarModal()"
+    (guardar)="guardarArma($event)"
+    (confirmarEliminar)="eliminarArmaConfirmada()"
+  ></app-arma-modal>
+
+  <ng-template #sinArmas>
+    <p class="mensaje-vacio">No hay armas que coincidan con la búsqueda.</p>
+  </ng-template>
+</div>

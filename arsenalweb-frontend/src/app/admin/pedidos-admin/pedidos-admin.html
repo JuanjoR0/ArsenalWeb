@@ -1,0 +1,33 @@
+<div class="pedidos-admin">
+  <div class="crud-header">
+    <h2>Gestión de Pedidos</h2>
+  </div>
+
+  <table class="crud-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Usuario</th>
+        <th>Fecha</th>
+        <th>Estado</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let pedido of pedidos" [class.pendiente]="pedido.estado === 'PENDIENTE'">
+        <td>{{ pedido.id }}</td>
+        <td>{{ pedido.usuario?.username || pedido.usuarioId }}</td>
+        <td>{{ pedido.fecha | date:'short' }}</td>
+        <td>{{ pedido.estado }}</td>
+        <td>
+          <button 
+            *ngIf="pedido.estado === 'PENDIENTE'" 
+            class="finalizar" 
+            (click)="cambiarEstado(pedido.id, 'FINALIZADO')">
+            ✅ Marcar como finalizado
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

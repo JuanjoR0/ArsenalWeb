@@ -1,0 +1,25 @@
+<div class="admin-layout">
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="assets/LogoAW-blanco.png" alt="Logo" />
+      <h3>Panel Admin</h3>
+    </div>
+    <nav>
+      <ul>
+        <li><a routerLink="/admin/armas" routerLinkActive="active">Armas</a></li>
+        <li><a routerLink="/admin/accesorios" routerLinkActive="active">Accesorios</a></li>
+        <li><a routerLink="/admin/usuarios" routerLinkActive="active">Usuarios</a></li>
+        <li><a routerLink="/admin/pedidos" routerLinkActive="active">Pedidos</a></li>
+      </ul>
+    </nav>
+    <div class="volver">
+      <button routerLink="/" class="btn-volver">⬅ Volver a la tienda</button>
+    </div>
+  </aside>
+
+  <!-- Contenido principal -->
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</div>

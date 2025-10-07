@@ -41,7 +41,7 @@ img{
     font-size: 1.1rem;
     transition: transform 0.3s ease;
     font-weight: bold;
-
+    padding: 6px 0px;
     &:hover {
       transform: scale(1.1);
     }
@@ -66,9 +66,9 @@ img{
 
   .carrito {
     cursor: pointer;
-    width: 34px;
-    height: 34px;
-    margin-left: 20px;
+    width: 30px;
+    height: 30px;
+    margin-left: 5px;
   }
 }
 .perfil {
@@ -100,5 +100,19 @@ img{
     &:hover {
       background: #444;
     }
+  }
+}
+
+.btn-admin {
+  padding: 6px 12px;
+  background-color: #c62828;
+  color: #fff;
+  border-radius: 4px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.2s ease-in-out;
+
+  &:hover {
+    background-color: #a51e1e;
   }
 }

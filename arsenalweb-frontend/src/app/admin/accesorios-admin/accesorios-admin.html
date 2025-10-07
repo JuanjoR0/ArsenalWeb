@@ -1,0 +1,56 @@
+<div class="accesorios-admin">
+  <div class="crud-header">
+    <h2>Gestión de Accesorios</h2>
+    <div class="acciones">
+      <input
+        type="text"
+        placeholder="🔍 Buscar accesorio..."
+        [(ngModel)]="searchTerm"
+        (keyup)="buscarAccesorios()"
+      />
+      <button class="btn-nueva" (click)="crearAccesorio()">➕ Nuevo Accesorio</button>
+    </div>
+  </div>
+
+  <table class="crud-table" *ngIf="accesorios.length > 0; else sinAccesorios">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Imagen</th>
+        <th>Nombre</th>
+        <th>Tipo</th>
+        <th>Descripción</th>
+        <th>Precio</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let acc of accesorios">
+        <td>{{ acc.id }}</td>
+
+        <!-- Imagen -->
+        <td>
+          <img
+            [src]="acc.imagen || '/assets/no-image.png'"
+            alt="{{ acc.nombre }}"
+            class="accesorio-img"
+          />
+        </td>
+
+        <td>{{ acc.nombre }}</td>
+        <td>{{ acc.tipo }}</td>
+        <td>{{ acc.descripcion }}</td>
+        <td>{{ acc.precio }} €</td>
+
+        <td>
+          <button class="edit" (click)="editarAccesorio(acc.id)">✏️</button>
+          <button class="delete" (click)="eliminarAccesorio(acc.id)">❌</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <ng-template #sinAccesorios>
+    <p class="mensaje-vacio">No hay accesorios disponibles o coincidentes con la búsqueda.</p>
+  </ng-template>
+</div>

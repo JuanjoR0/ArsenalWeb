@@ -1,0 +1,108 @@
+.armas-admin {
+  padding: 10px;
+
+  .crud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+
+    h2 {
+      margin: 0;
+    }
+
+    .acciones {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      input {
+        padding: 8px 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        width: 250px;
+        font-size: 14px;
+      }
+
+      .btn-nueva {
+        background: #28a745;
+        color: white;
+        padding: 8px 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 600;
+        transition: background 0.2s ease;
+
+        &:hover {
+          background: #218838;
+        }
+      }
+    }
+  }
+
+  .crud-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+    th, td {
+      padding: 10px;
+      text-align: center;
+      border-bottom: 1px solid #ddd;
+      vertical-align: middle;
+    }
+
+    th {
+      background: #f1f1f1;
+    }
+
+    .arma-img {
+      width: 80px;
+      height: 60px;
+      object-fit: contain;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      background-color: #fafafa;
+    }
+
+    .edit {
+      background: #ffc107;
+      border: none;
+      padding: 6px 10px;
+      margin-right: 5px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #e0a800;
+      }
+    }
+
+    .delete {
+      background: #dc3545;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #c82333;
+      }
+    }
+
+    tr:hover {
+      background: #f9f9f9;
+    }
+  }
+
+  .mensaje-vacio {
+    text-align: center;
+    margin-top: 30px;
+    color: #777;
+  }
+}

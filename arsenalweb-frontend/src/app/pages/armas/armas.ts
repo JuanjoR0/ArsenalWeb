@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ArmasService, Arma } from '../../services/armas.service';
+import { ArmasPublicService, ArmaPublica } from '../../services/armas-public.service';
 
 @Component({
   selector: 'app-armas',
@@ -11,13 +11,13 @@ import { ArmasService, Arma } from '../../services/armas.service';
   styleUrl: './armas.scss'
 })
 export class Armas implements OnInit {
-  armas: Arma[] = [];
+  armas: ArmaPublica[] = [];
   paginaActual = 0;
   totalPaginas = 0;
-  itemsPorPagina = 8;
+  itemsPorPagina = 12;
   searchTerm = '';
 
-  constructor(private armasService: ArmasService) {}
+  constructor(private armasService: ArmasPublicService) {}
 
   ngOnInit(): void {
     this.cargarArmas();

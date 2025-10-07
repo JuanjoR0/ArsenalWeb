@@ -9,7 +9,6 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
-
 @Configuration
 public class SecurityConfig {
 
@@ -27,13 +26,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // desactiva CSRF para facilitar pruebas
+            .cors(cors -> {}) // habilita CORS con CorsConfig
+            .csrf(csrf -> csrf.disable()) // desactiva CSRF
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**").permitAll() // login/register libre
-                .requestMatchers("/h2-console/**").permitAll() // 👈 habilitar h2-console
-                .anyRequest().authenticated()
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                .anyRequest().permitAll() // de momento abierto
             )
-            .headers(headers -> headers.frameOptions(frame -> frame.disable())); // 👈 necesario para iframes de H2
+            .headers(headers -> headers.frameOptions(frame -> frame.disable())); // necesario para h2-console
 
         return http.build();
     }

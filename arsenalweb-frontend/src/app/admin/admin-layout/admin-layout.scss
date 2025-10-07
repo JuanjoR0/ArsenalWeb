@@ -1,0 +1,68 @@
+.admin-layout {
+  display: flex;
+  height: 100vh;
+}
+h3{
+  margin-top: 22px;
+}
+.sidebar {
+  width: 220px;
+  background: #222;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* 👈 deja el botón abajo */
+  padding: 20px;
+}
+
+img{
+  width: 100px;
+  height: 90px;
+  margin-left: 30px;
+}
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin: 10px 0;
+}
+
+.sidebar nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 8px 12px;
+  border-radius: 5px;
+}
+
+.sidebar nav ul li a.active,
+.sidebar nav ul li a:hover {
+  background: #444;
+}
+
+.volver {
+  margin-top: auto;
+}
+
+.btn-volver {
+  width: 100%;
+  padding: 10px;
+  background: #1487e6;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.btn-volver:hover {
+  background: #c0392b;
+}
+
+.content {
+  flex: 1;
+  padding: 20px;
+  background: #f5f5f5;
+  overflow-y: auto;
+}

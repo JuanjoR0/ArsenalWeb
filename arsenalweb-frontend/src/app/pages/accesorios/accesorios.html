@@ -1,1 +1,55 @@
-<p>accesorios works!</p>
+<div class="seccionaccesorios">
+  <div class="contenedor">
+    <!-- 🔎 Buscador -->
+    <div class="buscador">
+      <input type="text"
+            placeholder="Buscar accesorio..."
+            [(ngModel)]="searchTerm"
+            (keyup)="buscar()">
+    </div>
+
+    <!-- 🧰 Catálogo de accesorios -->
+    <div class="row">
+      <div *ngFor="let accesorio of accesorios" class="col-md-3 mb-4">
+        <div class="card">
+          <img [src]="accesorio.imagen || 'https://via.placeholder.com/200x150'"
+              class="p-2"
+              style="max-height: 180px; object-fit: contain;"
+              [alt]="accesorio.nombre">
+          <div>
+            <h5 class="card-title fw-bold" style="font-size: 1.4rem;">{{ accesorio.nombre }}</h5>
+            <p class="text-muted">{{ accesorio.tipo }}</p>
+            <p style="min-height: 60px;">{{ accesorio.descripcion }}</p>
+            <p><strong>Precio:</strong> {{ accesorio.precio }} €</p>
+          </div>
+          <div class="card-footer bg-transparent border-0 text-center">
+            <button class="btn btn-dark w-100">Añadir al carrito</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 📄 Paginación -->
+    <div class="text-center mt-3" *ngIf="totalPaginas > 1">
+      <button class="btn btn-outline-dark mx-1"
+              [disabled]="paginaActual === 0"
+              (click)="cambiarPagina(paginaActual - 1)">
+              <span style="display:inline-block; transform: scaleX(-1);">➜</span>
+      </button>
+
+      <ng-container *ngFor="let p of [].constructor(totalPaginas); let i = index">
+        <button class="btn"
+                [ngClass]="i === paginaActual ? 'btn-dark' : 'btn-outline-dark'"
+                (click)="cambiarPagina(i)">
+          {{ i + 1 }}
+        </button>
+      </ng-container>
+
+      <button class="btn btn-outline-dark mx-1"
+              [disabled]="paginaActual === totalPaginas - 1"
+              (click)="cambiarPagina(paginaActual + 1)"> 
+              ➜
+      </button>
+    </div>
+  </div>
+</div>

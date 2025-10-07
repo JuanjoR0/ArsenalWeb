@@ -1,4 +1,14 @@
 :host {
   display: block;
-  padding-top: 60px; /* deja espacio igual a la altura del header */
+  height: 100%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
+
+app-root {
+  height: 100%;
 }

@@ -6,6 +6,10 @@
       <li><a routerLink="/armas">Armas</a></li>
       <li><a routerLink="/accesorios">Accesorios</a></li>
       <li><a routerLink="/contacto">Contacto</a></li>
+      <!-- Botón visible solo si es ADMIN -->
+      <ng-container *ngIf="authService.isAdmin()">
+        <a routerLink="/admin" class="btn-admin">Administración</a>
+      </ng-container>
     </ul>
 
     <div class="actions">
@@ -21,7 +25,8 @@
         <div class="perfil">
           <img src="assets/usuario.png" alt="Usuario" class="perfil-img">
           <span>{{ authService.getUsername() }}</span>
-          <button (click)="logout()">Cerrar sesión</button>
+          <button style="background: none; border: none; margin-left: 20px; cursor: pointer;"
+            (click)="logout()"><img style="height: 25px; width: 25px;" src="assets/cerrar-sesion.png" alt=""></button>
         </div>
       </ng-template>
 

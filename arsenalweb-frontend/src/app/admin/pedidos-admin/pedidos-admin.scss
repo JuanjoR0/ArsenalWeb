@@ -1,0 +1,54 @@
+.pedidos-admin {
+  padding: 20px;
+
+  .crud-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+
+    h2 {
+      margin: 0;
+    }
+  }
+
+  .crud-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background: #f1f1f1;
+    }
+
+    tr:hover {
+      background: #f9f9f9;
+    }
+
+    tr.pendiente {
+      background: #fff3cd; /* Amarillo para destacar pedidos pendientes */
+    }
+
+    .finalizar {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 6px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+
+      &:hover {
+        background: #218838;
+      }
+    }
+  }
+}

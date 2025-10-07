@@ -1,0 +1,70 @@
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="modal-container">
+    <div class="modal-header">
+      <h2 *ngIf="modo === 'crear'">Nueva Arma</h2>
+      <h2 *ngIf="modo === 'editar'">Editar Arma</h2>
+      <h2 *ngIf="modo === 'eliminar'">Eliminar Arma</h2>
+      <button class="close-btn" (click)="onCerrar()">✕</button>
+    </div>
+
+    <!-- 🔹 Formulario -->
+    <div class="modal-body" *ngIf="modo !== 'eliminar'">
+
+      <!-- Nombre -->
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="arma.nombre" placeholder="Nombre del arma" />
+
+      <label>Categoría:</label>
+      <select [(ngModel)]="arma.categoria" [ngModelOptions]="{ standalone: true }">
+        <option [ngValue]="null">-- Selecciona categoría --</option>
+        <option *ngFor="let c of categorias" [ngValue]="c">{{ c.nombre }}</option>
+      </select>
+
+
+      <!-- Alcance / Daño / Precisión -->
+      <div class="stats-grid">
+        <div>
+          <label>Alcance (%)</label>
+          <input type="number" [(ngModel)]="arma.alcance" min="0" max="100" />
+        </div>
+        <div>
+          <label>Daño (%)</label>
+          <input type="number" [(ngModel)]="arma.danio" min="0" max="100" />
+        </div>
+        <div>
+          <label>Precisión (%)</label>
+          <input type="number" [(ngModel)]="arma.precision" min="0" max="100" />
+        </div>
+      </div>
+
+      <!-- Precio -->
+      <label>Precio (€):</label>
+      <input type="number" [(ngModel)]="arma.precio" />
+
+      <!-- Imagen -->
+      <label>Imagen:</label>
+      <input type="file" accept="image/*" (change)="onImagenSeleccionada($event)" />
+      <!--<div class="preview" *ngIf="imagenPreview">
+        <img [src]="imagenPreview" alt="Vista previa" />
+      </div>-->
+
+      <!-- Descripción -->
+      <label>Descripción:</label>
+      <textarea [(ngModel)]="arma.descripcion"></textarea>
+    </div>
+
+    <!-- 🔴 Confirmación de eliminación -->
+    <div class="modal-body" *ngIf="modo === 'eliminar'">
+      <p>¿Seguro que deseas eliminar <strong>{{ arma.nombre }}</strong>?</p>
+    </div>
+
+    <!-- 🔘 Footer -->
+    <div class="modal-footer">
+      <button class="cancelar" (click)="onCerrar()">Cancelar</button>
+      <button *ngIf="modo !== 'eliminar'" class="guardar" (click)="onGuardar()">
+        {{ modo === 'crear' ? 'Crear' : 'Guardar' }}
+      </button>
+      <button *ngIf="modo === 'eliminar'" class="eliminar" (click)="onEliminar()">Eliminar</button>
+    </div>
+  </div>
+</div>

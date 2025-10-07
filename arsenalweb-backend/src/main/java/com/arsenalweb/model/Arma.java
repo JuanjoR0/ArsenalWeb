@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Min;
 import lombok.*;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @Entity
 @Table(name = "armas")
 @Data
@@ -30,10 +32,14 @@ public class Arma {
     @Column(nullable = false)
     private Integer stock;
 
+    @Lob // 👈 importante
+    @Column(columnDefinition = "CLOB")
     private String imagenUrl;
+
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "categoria_id")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Categoria categoria;
 
     // ---- estadísticas 0-100 ----
