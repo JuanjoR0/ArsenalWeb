@@ -5,7 +5,6 @@ import com.arsenalweb.service.ArmaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/armas")
@@ -18,9 +17,14 @@ public class AdminArmaController {
     }
 
     @GetMapping
-    public List<Arma> listarArmas() {
-        return armaService.findAll();
+    public ResponseEntity<?> listarArmas(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search
+    ) {
+        return ResponseEntity.ok(armaService.findAllPaged(page, size, search));
     }
+
 
     @PostMapping
     public Arma crearArma(@RequestBody Arma arma) {

@@ -8,7 +8,7 @@
         [(ngModel)]="searchTerm"
         (keyup)="buscarAccesorios()"
       />
-      <button class="btn-nueva" (click)="crearAccesorio()">➕ Nuevo Accesorio</button>
+      <button class="btn-nueva" (click)="abrirModalCrear()">➕ Nuevo Accesorio</button>
     </div>
   </div>
 
@@ -27,28 +27,35 @@
     <tbody>
       <tr *ngFor="let acc of accesorios">
         <td>{{ acc.id }}</td>
-
-        <!-- Imagen -->
         <td>
           <img
             [src]="acc.imagen || '/assets/no-image.png'"
-            alt="{{ acc.nombre }}"
+            [alt]="acc.nombre"
             class="accesorio-img"
           />
         </td>
-
         <td>{{ acc.nombre }}</td>
         <td>{{ acc.tipo }}</td>
         <td>{{ acc.descripcion }}</td>
         <td>{{ acc.precio }} €</td>
-
         <td>
-          <button class="edit" (click)="editarAccesorio(acc.id)">✏️</button>
-          <button class="delete" (click)="eliminarAccesorio(acc.id)">❌</button>
+          <!-- 👇 ahora abren el modal -->
+          <button class="edit" (click)="abrirModalEditar(acc)">✏️</button>
+          <button class="delete" (click)="abrirModalEliminar(acc)">❌</button>
         </td>
       </tr>
     </tbody>
   </table>
+
+  <app-accesorio-modal
+  [visible]="modalVisible"
+  [modo]="modalModo"
+  [accesorio]="accesorioSeleccionado"
+  (cerrar)="cerrarModal()"
+  (guardar)="guardarAccesorio($event)"
+  (confirmarEliminar)="eliminarAccesorioConfirmada()"
+></app-accesorio-modal>
+
 
   <ng-template #sinAccesorios>
     <p class="mensaje-vacio">No hay accesorios disponibles o coincidentes con la búsqueda.</p>

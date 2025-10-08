@@ -15,7 +15,7 @@ public class SecurityConfig {
     @SuppressWarnings("deprecation")
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance(); // ⚠️ solo para pruebas
+        return NoOpPasswordEncoder.getInstance(); // ⚠️ solo para desarrollo
     }
 
     @Bean
@@ -24,18 +24,28 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .cors(cors -> {}) // habilita CORS con CorsConfig
-            .csrf(csrf -> csrf.disable()) // desactiva CSRF
+            .cors(cors -> {}) // ✅ permite llamadas desde Angular
+            .csrf(csrf -> csrf.disable()) // ✅ desactiva CSRF
             .authorizeHttpRequests(auth -> auth
+                // rutas abiertas para frontend Angular
                 .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/armas/**").permitAll()
+                .requestMatchers("/api/accesorios/**").permitAll()
+
+                // rutas admin (abiertas temporalmente mientras desarrollas)
+                .requestMatchers("/api/admin/**").permitAll()
+
+                // consola H2
                 .requestMatchers("/h2-console/**").permitAll()
-                .anyRequest().permitAll() // de momento abierto
+
+                // todo lo demás
+                .anyRequest().permitAll()
             )
-            .headers(headers -> headers.frameOptions(frame -> frame.disable())); // necesario para h2-console
+            // ✅ permite que el H2 se renderice en navegador
+            .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
     }
-
 }

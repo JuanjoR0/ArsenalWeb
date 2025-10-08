@@ -27,9 +27,13 @@ export class ArmasService {
 
   // 🔹 Obtener lista de armas con paginación y búsqueda
   getArmas(page = 0, size = 10, search = ''): Observable<any> {
-    const params = `?page=${page}&size=${size}&search=${encodeURIComponent(search)}`;
+    let params = `?page=${page}&size=${size}`;
+    if (search) {
+      params += `&search=${encodeURIComponent(search)}`;
+    }
     return this.http.get<any>(`${this.apiUrl}${params}`);
   }
+
 
   // 🔹 Crear arma
   crearArma(arma: Arma): Observable<Arma> {

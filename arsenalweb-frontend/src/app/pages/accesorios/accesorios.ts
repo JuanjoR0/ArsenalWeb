@@ -1,10 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AccesoriosService, Accesorio, AccesorioPage } from '../../services/accesorios.service';
-
-
-
+import { AccesoriosPublicService, AccesorioPublico, AccesorioPage } from '../../services/accesorios-public.service';
 
 @Component({
   selector: 'app-accesorios',
@@ -14,14 +11,13 @@ import { AccesoriosService, Accesorio, AccesorioPage } from '../../services/acce
   styleUrl: './accesorios.scss'
 })
 export class AccesoriosComponent implements OnInit {
-  accesorios: Accesorio[] = [];
+  accesorios: AccesorioPublico[] = [];
   paginaActual = 0;
   totalPaginas = 0;
   itemsPorPagina = 12;
   searchTerm = '';
-  searchTipo = '';
 
-  constructor(private accesoriosService: AccesoriosService) {}
+  constructor(private accesoriosService: AccesoriosPublicService) {}
 
   ngOnInit(): void {
     this.cargarAccesorios();
@@ -29,7 +25,7 @@ export class AccesoriosComponent implements OnInit {
 
   cargarAccesorios() {
     this.accesoriosService
-      .getAccesorios(this.paginaActual, this.itemsPorPagina, this.searchTerm, this.searchTipo)
+      .getAccesorios(this.paginaActual, this.itemsPorPagina, this.searchTerm)
       .subscribe((data: AccesorioPage) => {
         console.log('Respuesta backend accesorios:', data);
         this.accesorios = data.content;

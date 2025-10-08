@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 export interface Accesorio {
-  id: number;
+  id?: number;
   nombre: string;
   tipo: string;
   descripcion: string;
@@ -11,35 +11,36 @@ export interface Accesorio {
   imagen: string;
 }
 
-export interface AccesorioPage {
-  content: Accesorio[];
-  totalPages: number;
-  totalElements: number;
-  size: number;
-  number: number;
-}
-
 @Injectable({
   providedIn: 'root'
 })
 export class AccesoriosService {
-  private apiUrl = 'http://localhost:8080/api/accesorios';
+  private apiUrl = 'http://localhost:8080/api/admin/accesorios';
 
   constructor(private http: HttpClient) {}
 
-  getAccesorios(page: number, size: number, nombre: string = '', tipo: string = ''): Observable<AccesorioPage> {
-    let url = `${this.apiUrl}?page=${page}&size=${size}`;
-    if (nombre) url += `&nombre=${nombre}`;
-    if (tipo) url += `&tipo=${tipo}`;
-    return this.http.get<AccesorioPage>(url);
+  // ✅ Obtener accesorios (listado con paginación)
+  getAccesorios(page: number = 0, size: number = 50): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}?page=${page}&size=${size}`);
   }
 
-  buscarAccesorios(nombre: string) {
-    return this.http.get<any>(`${this.apiUrl}?nombre=${nombre}`);
+  // ✅ Buscar accesorios por nombre
+  buscarAccesorios(termino: string) {
+    return this.http.get<Accesorio[]>(`${this.apiUrl}/buscar?termino=${termino}`);
   }
 
-  deleteAccesorio(id: number) {
-    return this.http.delete(`${this.apiUrl}/${id}`);
+  // ✅ Crear nuevo accesorio
+  crearAccesorio(accesorio: Accesorio): Observable<Accesorio> {
+    return this.http.post<Accesorio>(this.apiUrl, accesorio);
   }
 
+  // ✅ Actualizar accesorio existente
+  actualizarAccesorio(id: number, accesorio: Accesorio): Observable<Accesorio> {
+    return this.http.put<Accesorio>(`${this.apiUrl}/${id}`, accesorio);
+  }
+
+  // ✅ Eliminar accesorio
+  deleteAccesorio(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
 }

@@ -1,0 +1,46 @@
+<div class="modal-backdrop" *ngIf="visible">
+  <div class="modal-container">
+    <!-- 🔹 Cabecera -->
+    <div class="modal-header">
+      <h2 *ngIf="modo === 'crear'">Nuevo Accesorio</h2>
+      <h2 *ngIf="modo === 'editar'">Editar Accesorio</h2>
+      <h2 *ngIf="modo === 'eliminar'">Eliminar Accesorio</h2>
+      <button class="close-btn" (click)="onCerrar()">✕</button>
+    </div>
+
+    <!-- 🔹 Cuerpo del modal -->
+    <div class="modal-body" *ngIf="modo !== 'eliminar'">
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="accesorio.nombre" placeholder="Nombre del accesorio" />
+
+      <label>Tipo:</label>
+      <input type="text" [(ngModel)]="accesorio.tipo" placeholder="Tipo de accesorio" />
+
+      <label>Descripción:</label>
+      <textarea [(ngModel)]="accesorio.descripcion" placeholder="Descripción del accesorio"></textarea>
+
+      <label>Precio (€):</label>
+      <input type="number" [(ngModel)]="accesorio.precio" min="0" />
+
+      <label>Imagen:</label>
+      <input type="file" accept="image/*" (change)="onFileChange($event)" />
+      <div class="preview" *ngIf="accesorio.imagen">
+        <img [src]="accesorio.imagen" alt="Vista previa" />
+      </div>
+    </div>
+
+    <!-- 🔴 Confirmación de eliminación -->
+    <div class="modal-body" *ngIf="modo === 'eliminar'">
+      <p>¿Seguro que deseas eliminar <strong>{{ accesorio.nombre }}</strong>?</p>
+    </div>
+
+    <!-- 🔘 Footer -->
+    <div class="modal-footer">
+      <button class="cancelar" (click)="onCerrar()">Cancelar</button>
+      <button *ngIf="modo !== 'eliminar'" class="guardar" (click)="onGuardar()">
+        {{ modo === 'crear' ? 'Crear' : 'Guardar' }}
+      </button>
+      <button *ngIf="modo === 'eliminar'" class="eliminar" (click)="onEliminar()">Eliminar</button>
+    </div>
+  </div>
+</div>

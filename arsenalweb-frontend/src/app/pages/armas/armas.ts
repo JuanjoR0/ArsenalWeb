@@ -38,6 +38,7 @@ export class Armas implements OnInit {
   }
 
   buscar() {
+    console.log('Buscando:', this.searchTerm);
     this.paginaActual = 0;
     this.cargarArmas();
   }

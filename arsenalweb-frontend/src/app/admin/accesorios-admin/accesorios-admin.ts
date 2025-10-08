@@ -2,18 +2,27 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
-import { AccesoriosService } from '../../services/accesorios.service'; 
+
+import { AccesoriosService, Accesorio } from '../../services/accesorios.service';
+
+// 👇 IMPORTA el modal
+import { AccesorioModalComponent } from './accesorio-modal.component';
 
 @Component({
   selector: 'app-accesorios-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, AccesorioModalComponent],
   templateUrl: './accesorios-admin.html',
   styleUrl: './accesorios-admin.scss'
 })
 export class AccesoriosAdminComponent implements OnInit {
-  accesorios: any[] = [];
-  searchTerm: string = '';
+  accesorios: Accesorio[] = [];
+  searchTerm = '';
+
+  // 👇 Estado del modal
+  modalVisible = false;
+  modalModo: 'crear' | 'editar' | 'eliminar' = 'crear';
+  accesorioSeleccionado: Partial<Accesorio> = {};
 
   constructor(private accesoriosService: AccesoriosService) {}
 
@@ -21,9 +30,6 @@ export class AccesoriosAdminComponent implements OnInit {
     this.cargarAccesorios();
   }
 
-  /**
-   * Carga todos los accesorios con paginación básica
-   */
   cargarAccesorios(): void {
     this.accesoriosService.getAccesorios(0, 50).subscribe({
       next: (data: any) => {
@@ -35,16 +41,13 @@ export class AccesoriosAdminComponent implements OnInit {
     });
   }
 
-  /**
-   * Busca accesorios por nombre
-   */
   buscarAccesorios(): void {
-    if (this.searchTerm.trim().length === 0) {
+    const term = this.searchTerm.trim();
+    if (!term) {
       this.cargarAccesorios();
       return;
     }
-
-    this.accesoriosService.buscarAccesorios(this.searchTerm).subscribe({
+    this.accesoriosService.buscarAccesorios(term).subscribe({
       next: (data: any) => {
         this.accesorios = data.content || data;
       },
@@ -54,33 +57,76 @@ export class AccesoriosAdminComponent implements OnInit {
     });
   }
 
-  /**
-   * Crea un nuevo accesorio
-   */
-  crearAccesorio(): void {
-    alert('Funcionalidad para crear accesorio próximamente.');
+  // -------- MODAL: abrir/cerrar ----------
+  abrirModalCrear(): void {
+    this.modalModo = 'crear';
+    this.accesorioSeleccionado = {
+      nombre: '',
+      tipo: '',
+      descripcion: '',
+      precio: 0,
+      imagen: ''
+    };
+    this.modalVisible = true;
   }
 
-  /**
-   * Edita un accesorio existente
-   */
-  editarAccesorio(id: number): void {
-    alert('Editar accesorio con ID: ' + id);
+  abrirModalEditar(acc: Accesorio): void {
+    this.modalModo = 'editar';
+    this.accesorioSeleccionado = { ...acc };
+    this.modalVisible = true;
   }
 
-  /**
-   * Elimina un accesorio
-   */
-  eliminarAccesorio(id: number): void {
-    if (confirm('¿Seguro que deseas eliminar este accesorio?')) {
-      this.accesoriosService.deleteAccesorio(id).subscribe({
+  abrirModalEliminar(acc: Accesorio): void {
+    this.modalModo = 'eliminar';
+    this.accesorioSeleccionado = { ...acc };
+    this.modalVisible = true;
+  }
+
+  cerrarModal(): void {
+    this.modalVisible = false;
+  }
+
+  // -------- Guardar (crear/editar) ----------
+  guardarAccesorio(accesorio: Accesorio): void {
+    if (this.modalModo === 'crear') {
+      this.accesoriosService.crearAccesorio(accesorio).subscribe({
         next: () => {
-          this.accesorios = this.accesorios.filter((a) => a.id !== id);
+          this.cerrarModal();
+          this.cargarAccesorios();
         },
-        error: (err: HttpErrorResponse) => {
-          console.error('Error al eliminar accesorio:', err.message);
+        error: (err) => {
+          console.error('Error al crear accesorio:', err);
+          alert('No se pudo crear el accesorio.');
+        }
+      });
+    } else if (this.modalModo === 'editar' && this.accesorioSeleccionado.id != null) {
+      this.accesoriosService.actualizarAccesorio(this.accesorioSeleccionado.id, accesorio).subscribe({
+        next: () => {
+          this.cerrarModal();
+          this.cargarAccesorios();
+        },
+        error: (err) => {
+          console.error('Error al actualizar accesorio:', err);
+          alert('No se pudo actualizar el accesorio.');
         }
       });
     }
+  }
+
+  // -------- Eliminar (confirmación desde modal) ----------
+  eliminarAccesorioConfirmada(): void {
+    const id = this.accesorioSeleccionado.id;
+    if (id == null) return;
+
+    this.accesoriosService.deleteAccesorio(id).subscribe({
+      next: () => {
+        this.cerrarModal();
+        this.cargarAccesorios();
+      },
+      error: (err: HttpErrorResponse) => {
+        console.error('Error al eliminar accesorio:', err.message);
+        alert('No se pudo eliminar el accesorio.');
+      }
+    });
   }
 }
